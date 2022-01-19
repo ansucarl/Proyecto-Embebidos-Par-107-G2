@@ -1,12 +1,11 @@
+// Proyecto sistemas emebebidos
+//Matriz 5x5x5
 #include <avr/io.h>
 #include <util/delay.h>
 
-#define PIN_SER      PB1 // pin 14 on register
-#define PIN_RCLK     PB0 // pin 12 on register
-#define PIN_SRCLK    PB2 // pin 11 on register
-
-// NOTE: pin 10 (SRCLR') on register needs to go to VCC
-// NOTE: pin 13 (OE') on register needs to go to GND
+#define PIN_SER      PB1 // Puerto B1 Pin que controla Entrada de datos
+#define PIN_RCLK     PB0 // Puerto B0 Pin que controla el conteo del reloj
+#define PIN_SRCLK    PB2 // pin 11 Pin que funciona como disparador del 74HC595
 
 // write digital "high" to pin <pn> on portb
 #define GOHI(pn) PORTB |= (1<<pn)
@@ -39,7 +38,8 @@ int main(void) {
 }
 
 void setup() {
-    // set output pins on portb 
+  
+   // Configuracion de la Salidas del puerto B
     DDRB |= (1 << PIN_SER) | (1 << PIN_SRCLK) | (1 << PIN_RCLK);
 }
 
@@ -64,7 +64,7 @@ uint8_t rotateRight(uint8_t toRotate) {
 }
 
 /*
- * Writes a byte out serially to PIN_SER
+ * Funcion que escribe por byte  hacia la salida del pin de datos
  */
 void put(uint8_t toPut) {
     uint8_t i;
@@ -87,7 +87,7 @@ void putBit(uint8_t bit) {
 }
 
 /*
- * Tells the shift register to output all the bits it's read
+ * Funcion que dispara los datos almacenados en el registro
  */
 void latch() {
     GOHI(PIN_RCLK);
@@ -95,7 +95,7 @@ void latch() {
 }
 
 /*
- * Tells the shift register to read a bit
+ *  Funcion que dice al registro leer la señal de reloj
  */
 void cycleClock() {
     GOHI(PIN_SRCLK);
